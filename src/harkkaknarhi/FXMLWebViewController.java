@@ -236,7 +236,7 @@ public class FXMLWebViewController implements Initializable {
         try {
                 Stage webview = new Stage();
 
-                Parent page = FXMLLoader.load(getClass().getResource("FXMLPackageCreator.fxml"));
+                Parent page = FXMLLoader.load(getClass().getResource("FXMLmakeItem.fxml"));
 
                 Scene scene = new Scene(page);
 
