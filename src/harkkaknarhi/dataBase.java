@@ -1,6 +1,7 @@
 /*
 Lähteet: tutorialspoint.com, w3schools.com, stackoverflow.com, luentovideot, esimerkkirepository
 Tekijä: Kuisma Närhi 0453757
+Kaikki tietokantafunktiot, toimii rajapintana tietokannan ja muun ohjelman välillä.
  */
 package harkkaknarhi;
 
