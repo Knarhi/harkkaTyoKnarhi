@@ -23,13 +23,13 @@ public class timotei {
         float f = (float)aggressio;
         float onnenluku = f*s1;
         if (s2 == 2) {
-            if(onnenluku < 1.0) {
+            if(onnenluku < 10.0) {
                 return true;
             } else{
                 return false;
             }
         } if (s2 == 1) {
-            if(onnenluku<10.0) {
+            if(onnenluku<1.0) {
                  return true;
             } else {
 
