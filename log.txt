@@ -1,0 +1,3 @@
+Qizma:n lokit 2017-07-26T04:44:36.805 LähetysID | Käyttäjänimi | esine | pakettiluokka | Lähetyspaikka | Päätepaikka | Status
+1 | Qizma | kaalimato | 3 | Pakettiautomaatti, Prisma Kerava | Pakettiautomaatti, K-citymarket Kerava | Paketille tapahtui inhimillinen vahinko matkalla.
+2 | Qizma | kaalimato | 3 | Pakettiautomaatti, Prisma Kerava | Pakettiautomaatti, K-citymarket Kerava | Paketille tapahtui inhimillinen vahinko matkalla.

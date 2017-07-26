@@ -383,33 +383,33 @@ public class dataBase {
         }   
     
     }
-    public luokka getLuokka(int lab) {
-        int a,b,d,e,f,g;
-        float cc;
+    public luokka getLuokka(int label) {
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dataBase.db");
-            c.setAutoCommit(false);
-            System.out.println("Opened database successfully");
-            stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM luokka WHERE luokkalabel='"+lab+"';");
-            a = rs.getInt("sarkyvyys");
-            b = rs.getInt("paino");
-            cc = rs.getFloat("etaisyys");
-            d = rs.getInt("nopeus");
-            e = rs.getInt("korkeus");
-            f = rs.getInt("leveys");
-            g = rs.getInt("syvyys");
-            luokka l = new luokka(lab,a,b,cc,d,e,f,g);
-            stmt.close();
-            c.close();
-            return l;
-        } catch ( ClassNotFoundException | SQLException ex ) {
-            System.err.println( ex.getClass().getName() + ": " + ex.getMessage() );
-            System.exit(0);
-            return null;
-        }
+                Class.forName("org.sqlite.JDBC");
+                c = DriverManager.getConnection("jdbc:sqlite:dataBase.db");
+                c.setAutoCommit(false);
+                System.out.println("Opened database successfully");
+                stmt = c.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM luokka WHERE luokkalabel='"+label+"';");
+                int a = rs.getInt("luokkalabel");
+                int b = rs.getInt("sarkyvyys");
+                int cc = rs.getInt("paino");
+                float d = rs.getFloat("etaisyys");
+                int e = rs.getInt("nopeus");
+                int f = rs.getInt("korkeus");
+                int g = rs.getInt("leveys");
+                int h = rs.getInt("syvyys");
+                luokka o = new luokka(a,b,cc,d,e,f,g,h);
+                stmt.close();
+                c.close();
+                return o;
+            }  catch ( ClassNotFoundException | SQLException e ) {
+                System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+                System.exit(0);
+                return null;
+            }   
     }
+    
     public void createItem(opjekt o) {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -435,70 +435,34 @@ public class dataBase {
         }
         System.out.println("Records created successfully");
     }
-    
-    public void varastoon(int o, int l, int a) {
+
+    public ArrayList<paketti> getPakettis(String label, int userID) {
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:dataBase.db");
             c.setAutoCommit(false);
-            stmt = c.createStatement();      
-            String sql = "INSERT INTO varasto (esineID, luokkalabel, userID) VALUES (?,?,?)";            
-            PreparedStatement pstmt = c.prepareStatement(sql);
-            pstmt.setInt(1,o);
-            pstmt.setInt(2,l);
-            pstmt.setInt(3,a);
-            pstmt.executeUpdate();
-            stmt.close();
-            c.commit();
-            c.close();
-            
-        } catch ( ClassNotFoundException | SQLException e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            System.out.println("Opened database successfully");
+
+            stmt = c.createStatement();
+            ArrayList<paketti> lista = new ArrayList<>();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM paketti WHERE "+label+"= '" + userID + "';");
+                while (rs.next()) {
+                    int a = rs.getInt("userID");
+                    int b = rs.getInt("luokkalabel");
+                    int d = rs.getInt("esineID");
+                    paketti pk = new paketti(a,b,d);
+                    pk.setPakettiID(rs.getInt("pakettiID"));
+                    System.out.println("tietokannasta luettu paketti: "+a+b+d);
+                    lista.add(pk);
+                }  
+        c.close();
+        System.out.println("Operation done successfully");
+        return lista;
+        }  catch ( Exception e ) {
+        System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        System.exit(0);
+        return null;
         }
-        System.out.println("Records created successfully");
-    }
-    public int varastostaListaan(int userID) {
-        //palauttaa viimeisimmän lisäyksen varastoon
-        try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dataBase.db");
-            c.setAutoCommit(false);
-            stmt = c.createStatement();      
-            String sql = "SELECT MAX(varastoID) FROM varasto WHERE userID='"+userID+"';";            
-            ResultSet rs = stmt.executeQuery(sql);
-            int x = rs.getInt("varastoID");
-            System.out.println(x);
-            stmt.close();
-            c.close();
-            return x;
-            
-        } catch ( ClassNotFoundException | SQLException e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
-        }
-        
-        return 0;
-        
-    }
-    public int varastosta(String label, int varastoID) {
-        try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:dataBase.db");
-            c.setAutoCommit(false);
-            stmt = c.createStatement();      
-            String sql = "SELECT * FROM varasto WHERE varastoID='"+varastoID+";";            
-            ResultSet rs = stmt.executeQuery(sql);
-            int i = rs.getInt(label);
-            stmt.close();
-            c.close();
-            return i;
-        } catch ( ClassNotFoundException | SQLException e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
-        }
-        System.out.println("Records read.");
-        return 0;
     }
     public void pakettiin(paketti a) {
         try {
@@ -506,24 +470,116 @@ public class dataBase {
             c = DriverManager.getConnection("jdbc:sqlite:dataBase.db");
             c.setAutoCommit(false);
             stmt = c.createStatement();      
-            String sql = "INSERT INTO paketti (userID, varastoID, lahto, paate) VALUES (?,?,?,?)";            
+            String sql = "INSERT INTO paketti (userID, esineID, luokkalabel) VALUES (?,?,?)";            
             PreparedStatement pstmt = c.prepareStatement(sql);
             pstmt.setInt(1,a.userID);
-            pstmt.setInt(2,a.varastoID);
-            pstmt.setInt(3,a.lahto.id);
-            pstmt.setInt(4,a.paate.id);
+            pstmt.setInt(2,a.lk);
+            pstmt.setInt(3,a.op);
             pstmt.executeUpdate();
             stmt.close();
             c.commit();
-            c.close();
-            a.setTuote(varastosta("varastoID",varastostaListaan(a.userID)));
-            
+            c.close();   
         } catch ( ClassNotFoundException | SQLException e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
         }
         System.out.println("Records created successfully");
     }
-}
+    public void archive(int lh, String status, float dist) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dataBase.db");
+            c.setAutoCommit(false);
+            stmt = c.createStatement();      
+            String sql = "INSERT INTO arkisto (lahetysID, status, matka) VALUES (?,?,?)";            
+            PreparedStatement pstmt = c.prepareStatement(sql);
+            pstmt.setInt(1,lh);
+            pstmt.setString(2,status);
+            pstmt.setFloat(3,dist);
+            pstmt.executeUpdate();
+            stmt.close();
+            c.commit();
+            c.close();   
+        } catch ( ClassNotFoundException | SQLException e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Records created successfully");
+    }
+    
+    public void lahetys(String i, String j, int k, String stat, float matka) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dataBase.db");
+            c.setAutoCommit(false);
+            stmt = c.createStatement();      
+            String sql = "INSERT INTO lahetys (lahtopaikka, paatepaikka, pakettiID, status, matka) VALUES (?,?,?,?,?)";            
+            PreparedStatement pstmt = c.prepareStatement(sql);
+            pstmt.setString(1,i);
+            pstmt.setString(2,j);
+            pstmt.setInt(3,k);
+            pstmt.setString(4,stat);
+            pstmt.setFloat(5,matka);
+            pstmt.executeUpdate();
+            stmt.close();
+            c.commit();
+            c.close();   
+        } catch ( ClassNotFoundException | SQLException e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Records created successfully");
+    }
+    public void insertLog(int id, String log) {
+         try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dataBase.db");
+            c.setAutoCommit(false);
+            stmt = c.createStatement();      
+            String sql = "INSERT INTO logs (userID, log) VALUES (?,?)";            
+            PreparedStatement pstmt = c.prepareStatement(sql);
+            pstmt.setInt(1,id);
+            pstmt.setString(2,log);
+            pstmt.executeUpdate();
+            stmt.close();
+            c.commit();
+            c.close();   
+        } catch ( ClassNotFoundException | SQLException e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Records created successfully");
+    }
+    public String getLog(int id){
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:dataBase.db");
+            c.setAutoCommit(false);
+            System.out.println("Opened database successfully");
 
+            stmt = c.createStatement();
+            String s = "LähetysID | Käyttäjänimi | esine | pakettiluokka | Lähetyspaikka | Päätepaikka | Status\n";
+            ResultSet rs = stmt.executeQuery("SELECT lahetys.lahetysID, kayttajat.name AS nimi, esine.name AS esine, luokka.luokkalabel AS pakettiluokka, lahetys.lahtopaikka AS lähetyspaikka, lahetys.paatepaikka AS päätepaikka, lahetys.status FROM paketti " +
+"INNER JOIN lahetys " +
+"ON paketti.pakettiID = lahetys.pakettiID " +
+"INNER JOIN kayttajat " +
+"ON paketti.userID = kayttajat.userID " +
+"INNER JOIN esine " +
+"ON paketti.esineID = esine.esineID " +
+"INNER JOIN luokka " +
+"ON paketti.luokkalabel = luokka.luokkalabel " +
+"WHERE kayttajat.userID='"+id+"';");
+                while (rs.next()) {
+                    s = s + rs.getString("lahetysID") +" | "+ rs.getString("nimi")+" | "+ rs.getString("esine")+" | "+ rs.getString("pakettiluokka")+" | "+ rs.getString("lähetyspaikka")+" | "+ rs.getString("päätepaikka")+" | "+ rs.getString("status")+"\n";
+                }  
+        c.close();
+        System.out.println("Operation done successfully");
+        return s;
+        }  catch ( Exception e ) {
+        System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        System.exit(0);
+        return null;
+        }
+    }
+}
 

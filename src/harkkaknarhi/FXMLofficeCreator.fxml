@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.web.WebView?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="harkkaknarhi.FXMLofficeCreatorController">
+   <children>
+      <WebView fx:id="webbi" layoutX="6.0" layoutY="6.0" prefHeight="257.0" prefWidth="585.0" />
+      <TextField fx:id="cityField" layoutX="14.0" layoutY="268.0" promptText="kaupunki" />
+      <TextField fx:id="cityIDField" layoutX="14.0" layoutY="293.0" promptText="postinumero" />
+      <TextField fx:id="addressField" layoutX="14.0" layoutY="318.0" promptText="osoite" />
+      <TextField fx:id="nameField" layoutX="14.0" layoutY="343.0" promptText="Pisteen nimi" />
+      <TextField fx:id="openingField" layoutX="14.0" layoutY="368.0" promptText="aukioloajat" />
+      <TextField fx:id="latField" layoutX="437.0" layoutY="268.0" promptText="Latitude" />
+      <TextField fx:id="lngField" layoutX="437.0" layoutY="293.0" promptText="Longitude" />
+      <Label fx:id="label" layoutX="172.0" layoutY="276.0" prefHeight="118.0" prefWidth="249.0" text="Syötä pisteen tiedot kenttiin ja paina 'lisää piste'.  Tietojen oikeellisuus käyttäjän omalla vastuulla, googlen reititys ei välttämättä toimi tuulesta temmattuihin sijainteihin. Poistamisessa riittää pisteen osoite, postinumero, kaupunki ja nimi." textOverrun="CLIP" wrapText="true" />
+      <Button fx:id="addButton" layoutX="437.0" layoutY="331.0" mnemonicParsing="false" onAction="#addPoint" text="lisää piste" />
+      <Button fx:id="deletePoint" layoutX="437.0" layoutY="356.0" mnemonicParsing="false" onAction="#deletePoint" text="poista piste" />
+   </children>
+</AnchorPane>

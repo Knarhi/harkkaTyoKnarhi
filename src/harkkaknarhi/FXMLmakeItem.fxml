@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="279.0" prefWidth="179.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.102" fx:controller="harkkaknarhi.FXMLmakeItemController">
+   <children>
+      <TextField fx:id="nameField" layoutX="14.0" layoutY="38.0" promptText="nimi" />
+      <TextField fx:id="weightField" layoutX="14.0" layoutY="72.0" promptText="paino(g)" />
+      <TextField fx:id="heightField" layoutX="14.0" layoutY="105.0" promptText="korkeus(cm)" />
+      <TextField fx:id="widthField" layoutX="14.0" layoutY="139.0" promptText="leveys(cm)" />
+      <TextField fx:id="depthField" layoutX="14.0" layoutY="175.0" promptText="syvyys(cm)" />
+      <TextField fx:id="breakField" layoutX="14.0" layoutY="210.0" promptText="Särkyvyys(&gt;0)" />
+      <Button fx:id="button" layoutX="14.0" layoutY="245.0" mnemonicParsing="false" onAction="#createItem" prefHeight="25.0" prefWidth="149.0" text="luo!" />
+      <Label fx:id="label" layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="149.0" text="Luo esine!" />
+   </children>
+</AnchorPane>
